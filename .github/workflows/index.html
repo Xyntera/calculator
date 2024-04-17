@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            width: 100%;
+            max-width: 300px;
+            background-color: #333;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            overflow: hidden;
+        }
+
+        .screen {
+            background-color: #444;
+            color: #fff;
+            font-size: 24px;
+            padding: 10px;
+            text-align: right;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        button {
+            background-color: #6C757D;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            transform: perspective(1000px) rotateX(20deg) rotateY(0deg) scale(1);
+            backface-visibility: hidden;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            transition: width 0.3s ease, height 0.3s ease;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+
+        button:hover::before {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+        }
+
+        button:hover {
+            transform: perspective(1000px) rotateX(10deg) rotateY(0deg) scale(1.05);
+        }
+
+        .operator {
+            background-color: #FFC107;
+        }
+
+        .equal {
+            grid-column: span 2;
+            background-color: #28a745;
+        }
+
+        .clear {
+            background-color: #DC3545;
+        }
+
+        .x7aba {
+            background-color: #007BFF;
+        }
+
+        button:active {
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(0.9);
+        }
+
+        @media (max-width: 400px) {
+            .calculator {
+                padding: 15px;
+            }
+
+            .buttons {
+                gap: 8px;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="screen" id="screen">0</div>
+        <div class="buttons">
+            <button onclick="appendToScreen('7')" class="button3d">7</button>
+            <button onclick="appendToScreen('8')" class="button3d">8</button>
+            <button onclick="appendToScreen('9')" class="button3d">9</button>
+            <button onclick="appendToScreen('/')" class="button3d operator">÷</button>
+            <button onclick="appendToScreen('4')" class="button3d">4</button>
+            <button onclick="appendToScreen('5')" class="button3d">5</button>
+            <button onclick="appendToScreen('6')" class="button3d">6</button>
+            <button onclick="appendToScreen('*')" class="button3d operator">×</button>
+            <button onclick="appendToScreen('1')" class="button3d">1</button>
+            <button onclick="appendToScreen('2')" class="button3d">2</button>
+            <button onclick="appendToScreen('3')" class="button3d">3</button>
+            <button onclick="appendToScreen('-')" class="button3d operator">-</button>
+            <button onclick="appendToScreen('0')" class="button3d">0</button>
+            <button onclick="appendToScreen('.')" class="button3d">.</button>
+            <button onclick="calculate()" class="button3d equal">=</button>
+            <button onclick="appendToScreen('+')" class="button3d operator">+</button>
+            <button onclick="clearScreen()" class="button3d clear">C</button>
+            <button onclick="backspace()" class="button3d backspace">⌫</button>
+            <button onclick="appendToScreen('x7aba')" class="button3d x7aba">x7aba</button>
+        </div>
+    </div>
+
+    <script>
+        let screen = document.getElementById('screen');
+
+        // Function to append value to screen
+        function appendToScreen(value) {
+            if (value === 'x7aba') {
+                screen.innerText = '';
+                screen.style.fontSize = '36px';
+                screen.style.color = '#007BFF';
+            } else if (screen.innerText === '0') {
+                screen.innerText = '';
+            }
+            screen.innerText += value;
+        }
+
+        // Function to clear the screen
+        function clearScreen() {
+            screen.innerText = '0';
+            screen.style.fontSize = '24px';
+            screen.style.color = '#fff';
+        }
+
+        // Function to remove the last character from screen
+        function backspace() {
+            screen.innerText = screen.innerText.slice(0, -1);
+        }
+
+        // Function to calculate the expression
+        function calculate() {
+            try {
+                screen.innerText = eval(screen.innerText);
+            } catch (error) {
+                screen.innerText = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
